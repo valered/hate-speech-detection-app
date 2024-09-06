@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #B1B7B4; /* Sfondo scuro per un aspetto moderno */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altezza dell'intera viewport */
+}
+
+.container {
+  background: #DDE3E0; /* Sfondo più scuro per il contenitore */
+  padding: 40px; /* Aumentato il padding per una sensazione spaziosa */
+  border-radius: 20px; /* Angoli arrotondati per un aspetto morbido */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Ombra più pronunciata per la profondità */
+  width: 90%;
+  max-width: 800px; /* Aumentata la larghezza massima del contenitore */
+}
+
+h1, h2 {
+  text-align: center;
+  color: #5E6E66; /* Colore del testo più scuro per i titoli */
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 20px; /* Aggiunta di margine per lo spazio */
+}
+
+textarea {
+  width: 100%; /* Larghezza completa del contenitore */
+  padding: 20px; /* Aumentato il padding per il comfort */
+  border: none;
+  border-radius: 10px; /* Angoli arrotondati per la textarea */
+  background-color: #C3C6C5; /* Sfondo blu scuro per la textarea */
+  color: gray; /* Testo bianco per la leggibilità */
+  font-size: 16px;
+  margin-bottom: 20px;
+  resize: none; /* Disabilita il ridimensionamento */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Spazio tra i pulsanti */
+}
+
+.file-upload {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 15px 25px; /* Aumentato il padding */
+  border-radius: 10px; /* Angoli arrotondati per il pulsante */
+  background: #879D92; /* Colore morbido per il pulsante */
+  color: white; /* Testo bianco */
+  text-align: center;
+  transition: background 0.3s ease; /* Transizione fluida */
+}
+
+#file-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #657A5E; /* Colore del testo per abbinarsi al tema */
+  text-align: center;
+}
+
+.file-upload:hover {
+  background: #5E6E66; /* Tonalità più scura al passaggio del mouse */
+}
+
+.file-upload input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0; /* Nascondi l'input file */
+  cursor: pointer; /* Cambia il cursore in puntatore */
+}
+
+.proceed-button {
+  padding: 15px 25px; /* Aumentato il padding */
+  border: none;
+  border-radius: 10px; /* Angoli arrotondati per il pulsante */
+  background: #879D92; /* Colore morbido per il pulsante */
+  color: white; /* Colore del testo */
+  font-size: 16px;
+  cursor: pointer; /* Cambia il cursore in puntatore */
+  transition: background 0.3s ease; /* Transizione fluida */
+}
+
+.proceed-button:hover {
+  background: #5E6E66; /* Tonalità più scura al passaggio del mouse */
+}
+
+.back-link {
+  display: inline-block; /* Fai comportare il link come un pulsante */
+  margin-top: 20px; /* Spazio sopra il link */
+  padding: 15px 25px; /* Padding per il link */
+  border-radius: 10px; /* Angoli arrotondati per il link */
+  background: #5E6E66; /* Sfondo morbido per il link */
+  color: white; /* Testo bianco */
+  text-align: center;
+  text-decoration: none; /* Rimuovi la sottolineatura */
+  transition: background 0.3s ease; /* Transizione fluida */
+}
+
+.back-link:hover {
+  background: #4a5a52; /* Tonalità leggermente più scura al passaggio del mouse */
+}
+
+.progress-bar-wrapper {
+  width: 100%;
+  background-color: #e0e0e0; /* Colore di sfondo per la barra vuota */
+  border-radius: 5px; /* Angoli arrotondati per la barra */
+  overflow: hidden; /* Assicurati che la barra interna non trabocchi */
+  margin: 10px 0; /* Spazio tra le barre */
+  height: 20px; /* Altezza della barra */
+}
+
+.progress-bar {
+  height: 100%;
+  text-align: center;
+  line-height: 20px; /* Centratura verticale del testo */
+  color: white; /* Colore del testo all'interno della barra */
+  transition: width 0.4s ease; /* Animazione di riempimento fluida */
+  border-radius: 5px; /* Angoli arrotondati per la barra interna */
+}
+
+ul {
+  list-style-type: none; /* Rimuovi i punti elenco dalla lista */
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 15px; /* Spazio tra gli elementi della lista */
+  padding: 10px; /* Padding all'interno dell'elemento della lista */
+  background: #C3C6C5; /* Sfondo per gli elementi della lista */
+  border-radius: 10px; /* Angoli arrotondati per gli elementi della lista */
+}

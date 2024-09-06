@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Verification Result</h1>
+        <p style="color: grey;">Text: <strong>{{ input_text }}</strong></p>
+        <h2>Results:</h2>
+        <ul style="color: grey;">
+            {% for result in results %}
+            {% set perc = (result['score'] * 100) | round(2) %}
+            <li>
+                {{ result['label'] }}: {{ perc }}%
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar" style="width: {{ perc }}%; background-color: {% if result['label'] == 'non-offensive' %} green {% else %} red {% endif %};">
+                    </div>
+                </div>
+                {% if result['label'] == 'hate speech' %}
+                <p><strong>Gruppo Mirato:</strong> {{ result['target_group'] }}</p>
+                {% endif %}
+                {% if result['label'] != 'non-offensive' %}
+                <p> {{ result['explanation'] if result['explanation'] else "Nessuna spiegazione disponibile." }}</p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <a class="back-link" href="/">Go Back</a>
+    </div>
+</body>
+</html>
