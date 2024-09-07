@@ -29,6 +29,36 @@
             </li>
             {% endfor %}
         </ul>
+
+        <!-- ################### AGGIUNTA DI 'Emotion Detection', 'Hate Speech Detection' E 'Irony Detection' DEL MODELLO TWEETEVAL ###################
+            <div class="result-item">
+                <h2>Emotion Detection:</h2>
+                <ul style="color: grey;">
+                    {% for result in results.emotion %}
+                    <li>{{ result['label'] }}: {{ (result['score'] * 100) | round(2) }}%</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="result-item">
+                <h2>Hate Speech Detection:</h2>
+                <ul style="color: grey;">
+                    {% for result in results.hate_speech %}
+                    <li>{{ result['label'] }}: {{ (result['score'] * 100) | round(2) }}%</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="result-item">
+                <h2>Irony Detection:</h2>
+                <ul style="color: grey;">
+                    {% for result in results.irony %}
+                    <li>{{ result['label'] }}: {{ (result['score'] * 100) | round(2) }}%</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        -->
+
         <a class="back-link" href="/">Go Back</a>
     </div>
 </body>

@@ -17,6 +17,24 @@ tokenizer = AutoTokenizer.from_pretrained("IMSyPP/hate_speech_en")
 model = AutoModelForSequenceClassification.from_pretrained("IMSyPP/hate_speech_en")
 classifier = pipeline("text-classification", model=model, tokenizer=tokenizer)
 
+################### Carica il modello HateBERT ###################
+'''
+tokenizer = AutoTokenizer.from_pretrained("GroNLP/hateBERT")
+model = AutoModelForSequenceClassification.from_pretrained("GroNLP/hateBERT")
+classifier = pipeline("text-classification", model=model, tokenizer=tokenizer)
+'''
+
+################### Caricamento delle pipeline per diversi compiti, modello TWEETEVAL ###################
+'''
+tokenizer_offensive = AutoTokenizer.from_pretrained("cardiffnlp/twitter-roberta-base-offensive")
+model_offensive = AutoModelForSequenceClassification.from_pretrained("cardiffnlp/twitter-roberta-base-offensive")
+classifier_offensive = pipeline("text-classification", model=model_offensive, tokenizer=tokenizer_offensive)
+classifier_emotion = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion")
+classifier_hate_speech = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-hate")
+classifier_irony = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-irony")
+'''
+
+
 # Dizionario per mappare le etichette del modello con le etichette desiderate
 label_mapping = {
     'LABEL_0': 'acceptable',
@@ -24,6 +42,35 @@ label_mapping = {
     'LABEL_2': 'offensive',
     'LABEL_3': 'violent'
 }
+
+################### Dizionario per etichette di classificazione di HateBERT ###################
+'''
+label_mapping = {
+    'LABEL_0': 'non-offensive',
+    'LABEL_1': 'offensive',
+    'LABEL_2': 'hate speech'
+}
+'''
+
+################### Dizionario per i gruppi mirati per il modello HateBERT ###################
+'''
+target_groups = {
+    'women': 'genere',
+    'migrants': 'nazionalità/etnia',
+    'race': 'razza',
+    'religion': 'religione',
+    'sexuality': 'orientamento sessuale'
+}
+'''
+
+################### Mappatura delle etichette del modello TWEETEVAL ###################
+'''
+label_mapping_offensive = {
+    'LABEL_0': 'acceptable',  # Non offensivo
+    'LABEL_1': 'offensive'    # Offensivo
+}
+'''
+
 
 def convert_audio_to_text(file_path):
     """Converte un file audio in testo utilizzando la libreria SpeechRecognition."""
@@ -47,6 +94,17 @@ def convert_audio_to_text(file_path):
     os.remove(wav_path)
 
     return text
+
+################### Identifica il gruppo mirato se viene rilevato hate speech dal modello HateBERT ###################
+'''
+def identify_target_group(text):
+    """Identifica il gruppo mirato se viene rilevato hate speech."""
+    for group in target_groups:
+        if re.search(group, text, re.IGNORECASE):
+            return target_groups[group]
+    return "non identificato"
+'''
+
 
 def generate_explanation(comment, classification):
     # URL dell'API locale di LM Studio
