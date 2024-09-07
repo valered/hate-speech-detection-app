@@ -33,3 +33,14 @@ Click the button labeled "Start API Server".
 
 Set the API Port:
 Ensure that the API is set to run on port 8080, or specify the port in your application settings to match the API configuration.
+
+
+
+default template: IMSyPP
+if you want to test the other models:
+1 remove the comments related to the model you want to test.
+2 comment out the default code
+
+these changes affect two files:
+1 app.py
+2 result.html
