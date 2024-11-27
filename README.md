@@ -44,3 +44,17 @@ if you want to test the other models:
 these changes affect two files:
 1 app.py
 2 result.html
+
+As part of a Natural Language Processing (NLP) course, an additional extension has been integrated into the project. The goal of this extension is to evaluate the performance of the three models under consideration—HateBERT, IMSyPP, and TWEETEVAL—and identify the most efficient one.
+The extension includes:
+
+1 Dataset: The dataset used for testing and analyzing the models is located in the NLP folder.
+2 Graphs: The results are presented in the form of graphical plots for better comparison and understanding.
+
+This extension provides a detailed analysis of the models, enabling further exploration of their strengths and weaknesses in detecting harmful content. For more information, refer to the files inside the NLP folder.
+
+
+
+
+
+
