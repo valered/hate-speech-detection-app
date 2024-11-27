@@ -1,10 +1,12 @@
 ############################################# MODELLO 1: IMSyPP #############################################
+
 from flask import Flask, request, render_template, redirect, url_for
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 import os
 import speech_recognition as sr  # Libreria per il riconoscimento vocale
 from pydub import AudioSegment  # Libreria per la manipolazione audio
 import requests
+import csv
 
 app = Flask(__name__)
 
@@ -17,7 +19,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 tokenizer = AutoTokenizer.from_pretrained("IMSyPP/hate_speech_en")
 model = AutoModelForSequenceClassification.from_pretrained("IMSyPP/hate_speech_en")
 classifier = pipeline("text-classification", model=model, tokenizer=tokenizer)
-
 
 # Dizionario per mappare le etichette del modello con le etichette desiderate
 label_mapping = {
@@ -53,15 +54,10 @@ def convert_audio_to_text(file_path):
 
 
 def generate_explanation(comment, classification):
-    # URL dell'API locale di LM Studio
+    """Genera una spiegazione usando un modello di linguaggio."""
     url = "http://localhost:8080/v1/completions"
+    headers = {"Content-Type": "application/json"}
 
-    # Intestazioni della richiesta
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    # Prompt migliorato per dare contesto e istruzioni chiare al modello
     prompt = f"""
     Given the following comment: "{comment}"
     The comment has been classified as '{classification}'.
@@ -70,24 +66,17 @@ def generate_explanation(comment, classification):
     Focus on the linguistic elements and the context of the comment that contribute to this classification.
     """
 
-    # Corpo della richiesta
     data = {
         "prompt": prompt,
-        "temperature": 0.5,  # temperatura ridotta per risposte meno creative e più mirate
+        "temperature": 0.5,
         "max-tokens": 1000
     }
 
     try:
-        # Invia una richiesta POST all'API di LM Studio
         response = requests.post(url, json=data, headers=headers)
         response.raise_for_status()
-
-        # Ottieni il risultato JSON dalla risposta
         result = response.json()
-
-        # Estrai la spiegazione generata
         explanation = result.get('choices', [{}])[0].get('text', '')
-
         return explanation.strip()
 
     except requests.exceptions.HTTPError as http_err:
@@ -96,7 +85,6 @@ def generate_explanation(comment, classification):
         print(f"Errore: {err}")
     
     return None
-
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -117,15 +105,24 @@ def home():
             
             for result in results:
                 result['label'] = label_mapping.get(result['label'], result['label'])
-                
-                # Chiama la funzione di generazione con il commento e l'etichetta di classificazione
                 result['explanation'] = generate_explanation(input_text, result['label'])
+
+            # Salva i risultati
+            save_predictions(input_text, results)
 
             return render_template("result.html", results=results, input_text=input_text)
         else:
             return redirect(url_for('home'))
 
     return render_template("index.html")
+
+
+def save_predictions(input_text, results):
+    """Salva le previsioni in un file CSV."""
+    with open('predictions.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        for result in results:
+            writer.writerow([input_text, result['label'], result.get('explanation', '')])
 
 
 if __name__ == "__main__":
@@ -263,6 +260,7 @@ import speech_recognition as sr
 from pydub import AudioSegment
 import requests
 import re  # Libreria per identificare gruppi mirati
+import csv
 
 app = Flask(__name__)
 
@@ -362,6 +360,14 @@ def generate_explanation(comment, classification):
     
     return None
 
+def save_predictions(input_text, results):
+    """Salva le previsioni in un file CSV."""
+    with open('predictions.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        for result in results:
+            target_group = result.get('target_group', 'non identificato')
+            writer.writerow([input_text, result['label'], result.get('explanation', ''), target_group])
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
@@ -381,11 +387,16 @@ def home():
                 if result['label'] == 'hate speech':
                     result['target_group'] = identify_target_group(input_text)
                 result['explanation'] = generate_explanation(input_text, result['label'])
+
+            # Salva i risultati
+            save_predictions(input_text, results)
+
             return render_template("result.html", results=results, input_text=input_text)
         else:
             return redirect(url_for('home'))
 
     return render_template("index.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
